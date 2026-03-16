@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darktide Character Guide // Inquisition Terminal</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+    :root {
+      --bg: #060708;
+      --bg-2: #0d1013;
+      --panel: rgba(10, 13, 16, 0.92);
+      --panel-2: rgba(17, 21, 26, 0.94);
+      --line: rgba(201, 165, 79, 0.26);
+      --line-strong: rgba(201, 165, 79, 0.52);
+      --gold: #c9a54f;
+      --gold-2: #e1c378;
+      --red: #8b1e1e;
+      --red-2: #c93838;
+      --text: #ebe2cf;
+      --muted: #9b927f;
+      --green: #5f8f61;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      --glow: 0 0 18px rgba(201, 165, 79, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(139,30,30,0.18), transparent 22%),
+        linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+      letter-spacing: 0.2px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.08;
+      mix-blend-mode: screen;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015) 0%, transparent 8%, transparent 92%, rgba(255,255,255,0.015) 100%);
+      opacity: 0.6;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.025) 0,
+        rgba(255,255,255,0.025) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      opacity: 0.04;
+      animation: flicker 6s linear infinite;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.04; }
+      48% { opacity: 0.055; }
+      50% { opacity: 0.02; }
+      52% { opacity: 0.05; }
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 18px 0 44px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: archiveBoot 0.9s ease 0.15s forwards;
+    }
+
+    @keyframes archiveBoot {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .topbar {
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: rgba(9, 11, 14, 0.86);
+      box-shadow: var(--shadow);
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .topbar strong { color: var(--gold-2); font-weight: 700; }
+
+    .hero {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(34, 24, 11, 0.24), rgba(10, 13, 16, 0.94));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,165,79,0.09), transparent 34%, transparent 66%, rgba(201,56,56,0.1));
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 20px;
+      padding: 22px;
+      position: relative;
+      z-index: 1;
+      align-items: center;
+    }
+
+    .sigil {
+      width: 180px;
+      height: 180px;
+      border: 1px solid var(--line-strong);
+      background:
+        radial-gradient(circle at 30% 30%, rgba(201,165,79,0.2), transparent 32%),
+        linear-gradient(180deg, #1a1d22, #0c0e12);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-size: 64px;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.4), var(--glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sigil::after {
+      content: "INQ";
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: rgba(201,165,79,0.6);
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .eyebrow {
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2.6px;
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: "Cinzel", Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 6vw, 50px);
+      line-height: 0.98;
+      text-transform: uppercase;
+      color: #f5ebd6;
+      text-shadow: 0 0 12px rgba(201,165,79,0.14);
+    }
+
+    .typing {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid var(--gold);
+      width: 0;
+      animation: typing 2.4s steps(18, end) 3.2s forwards, caretFade 0.01s linear 5.7s forwards;
+    }
+
+    .type-delayed {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid rgba(201,165,79,0.65);
+      width: 0;
+      animation: typing 2.2s steps(70, end) 3.45s forwards, caretFade 0.01s linear 5.8s forwards;
+    }
+
+    .type-delayed-2 {
+      display: inline;
+      white-space: normal;
+      overflow: visible;
+      border-right: none;
+      opacity: 0;
+      animation: fadeInText 0.9s ease 4.1s forwards;
+    }
+
+    .type-psyker {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid rgba(201,165,79,0.55);
+      width: 0;
+      animation: typing 1.9s steps(26, end) 4.15s forwards, caretFade 0.01s linear 6.2s forwards;
+    }
+
+    .type-psyker-2 {
+      display: inline;
+      white-space: normal;
+      overflow: visible;
+      border-right: none;
+      opacity: 0;
+      animation: fadeInText 0.9s ease 4.75s forwards;
+    }
+
+    @keyframes fadeInText {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes caretFade {
+      to {
+        border-right-color: transparent;
+      }
+    }
+
+    @keyframes typing { from { width: 0; } to { width: 100%; } }
+    @keyframes caret { 50% { border-color: transparent; } }
+
+    .subtitle {
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      margin-top: 12px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 14px;
+    }
+
+    .intro {
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      margin-top: 14px;
+      max-width: 760px;
+      color: var(--text);
+      line-height: 1.68;
+      font-size: 15px;
+    }
+
+    .hero-actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .build-switcher {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .switch-btn {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: rgba(201,165,79,0.08);
+      color: var(--text);
+      padding: 10px 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      box-shadow: var(--glow);
+    }
+
+    .switch-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(201,165,79,0.14);
+    }
+
+    .switch-btn.active {
+      background: rgba(201,56,56,0.16);
+      border-color: rgba(201,56,56,0.55);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border: 1px solid var(--line-strong);
+      background: rgba(201,165,79,0.08);
+      color: var(--text);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 12px;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: var(--glow);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(201,165,79,0.14);
+    }
+
+    .btn-danger {
+      background: rgba(201,56,56,0.1);
+      border-color: rgba(201,56,56,0.45);
+    }
+
+    .seal {
+      margin-top: 16px;
+      display: inline-block;
+      border: 1px solid rgba(95,143,97,0.5);
+      background: rgba(95,143,97,0.1);
+      color: #b7d1b3;
+      padding: 8px 12px;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+    }
+
+    .grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .panel {
+      grid-column: span 12;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      animation: panelGlow 5.5s ease-in-out infinite;
+    }
+
+    @keyframes panelGlow {
+      0%, 100% { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 0 rgba(201,165,79,0); }
+      50% { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), 0 0 18px rgba(201,165,79,0.08); }
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red-2), var(--gold), transparent);
+      opacity: 0.85;
+    }
+
+    .span-8 { grid-column: span 8; }
+    .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+
+    .section-title {
+      font-family: "Cinzel", Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .quote {
+      font-style: italic;
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+      border-left: 3px solid var(--gold);
+      background: rgba(201,165,79,0.08);
+      padding: 12px 14px;
+      line-height: 1.72;
+      font-style: italic;
+      color: #efe4cc;
+    }
+
+    .stats {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat-row { display: grid; gap: 6px; }
+
+    .stat-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text);
+    }
+
+    .bar {
+      height: 12px;
+      border: 1px solid rgba(201,165,79,0.24);
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      box-shadow: 0 0 20px rgba(201,165,79,0.22);
+      animation: loadbar 1.5s ease 3.4s forwards;
+    }
+
+    .fill.delay-1 { animation-delay: 3.48s; }
+    .fill.delay-2 { animation-delay: 3.56s; }
+    .fill.delay-3 { animation-delay: 3.64s; }
+    .fill.delay-4 { animation-delay: 3.72s; }
+
+    @keyframes loadbar {
+      from { width: 0; }
+      to { width: var(--target-width, 0%); }
+    } }
+
+    .list, .priority-list, .tips {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li, .priority-item, .tip, .weapon, .step, .build-box {
+      border: 1px solid rgba(201,165,79,0.16);
+      background: var(--panel-2);
+      padding: 12px;
+    }
+
+    .label {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 11px;
+    }
+
+    .list li, .priority-item, .tip, .weapon, .step, .build-box, .footer, .intro, .quote {
+      line-height: 1.65;
+    }
+
+    .weapon strong, .step strong, .build-box strong, .priority-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #f2e8d2;
+      font-size: 15px;
+    }
+
+    .muted { color: var(--muted); }
+
+    .hl-psi {
+      color: #d9b86a;
+      font-weight: 700;
+    }
+
+    .hl-warp {
+      color: #d58cff;
+      font-weight: 700;
+    }
+
+    .hl-danger {
+      color: #e28b8b;
+      font-weight: 700;
+    }
+
+    .hl-support {
+      color: #9fc8ff;
+      font-weight: 700;
+    }
+
+    .hl-weapon {
+      color: #f0d9a0;
+      font-weight: 700;
+    }
+
+    .step-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .terminal {
+      font-family: "Courier New", Consolas, monospace;
+      border: 1px solid var(--line-strong);
+      background: #080a0c;
+      padding: 14px;
+      font-family: "Courier New", monospace;
+      font-size: 13px;
+      color: #d7d0be;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .terminal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(201,165,79,0.04), transparent 22%, transparent 78%, rgba(201,56,56,0.04));
+      pointer-events: none;
+    }
+
+    .terminal-line {
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(4px);
+      animation: terminalReveal 0.45s ease forwards;
+    }
+
+    .terminal-line:nth-child(1) { animation-delay: 0.15s; }
+    .terminal-line:nth-child(2) { animation-delay: 0.45s; }
+    .terminal-line:nth-child(3) { animation-delay: 0.75s; }
+    .terminal-line:nth-child(4) { animation-delay: 1.05s; }
+    .terminal-line:nth-child(5) { animation-delay: 1.35s; }
+
+    @keyframes terminalReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .terminal-prompt { color: var(--gold-2); }
+    .terminal-ok { color: #9bc49a; }
+    .terminal-warn { color: #d29c7b; }
+
+    .priority-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .priority-card {
+      border: 1px solid rgba(201,165,79,0.18);
+      background: rgba(18,22,27,0.9);
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .priority-title {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .priority-enemy {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(201,165,79,0.14);
+      background: rgba(10, 13, 16, 0.72);
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+
+    .enemy-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      display: grid;
+      place-items: center;
+      color: var(--gold-2);
+      background: rgba(201,165,79,0.08);
+      font-size: 16px;
+      flex: 0 0 36px;
+    }
+
+    .enemy-name {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: var(--text);
+    }
+
+    .enemy-tag {
+      margin-left: auto;
+      border: 1px solid rgba(201,56,56,0.45);
+      background: rgba(201,56,56,0.1);
+      color: #f0c3c3;
+      padding: 4px 8px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      white-space: nowrap;
+    }
+
+    .frame-box {
+      position: relative;
+    }
+
+    .frame-box::before,
+    .frame-box::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: var(--line-strong);
+      border-style: solid;
+      pointer-events: none;
+    }
+
+    .frame-box::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .frame-box::after {
+      right: -1px;
+      bottom: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .stamp {
+      display: inline-block;
+      border: 2px solid rgba(201,56,56,0.55);
+      color: rgba(231,132,132,0.9);
+      padding: 8px 12px;
+      text-transform: uppercase;
+      letter-spacing: 2.2px;
+      font-size: 11px;
+      transform: rotate(-7deg);
+      margin-top: 10px;
+    }
+
+    .stamp.approved {
+      border-color: rgba(95,143,97,0.6);
+      color: rgba(183,209,179,0.95);
+      background: rgba(95,143,97,0.08);
+      opacity: 0;
+      transform: rotate(-6deg) scale(0.9);
+      animation: stampIn 0.8s ease 0.8s forwards;
+    }
+
+    .dossier-stamp {
+      display: inline-block;
+      margin-top: 12px;
+      border: 2px solid rgba(201,56,56,0.62);
+      color: rgba(241,170,170,0.95);
+      background: rgba(201,56,56,0.08);
+      padding: 10px 14px;
+      text-transform: uppercase;
+      letter-spacing: 2.2px;
+      font-size: 11px;
+      transform: rotate(-5deg);
+      opacity: 0;
+      animation: stampIn 0.85s ease 1.25s forwards;
+    }
+
+    @keyframes stampIn {
+      0% { opacity: 0; transform: rotate(-6deg) scale(1.25); }
+      70% { opacity: 1; transform: rotate(-6deg) scale(0.96); }
+      100% { opacity: 1; transform: rotate(-6deg) scale(1); }
+    }
+
+    .builds-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      margin-top:10px;
+    }
+
+    .builds-grid.single-view {
+      grid-template-columns: 1fr;
+    }
+
+    .step-media {
+      margin-top: 10px;
+    }
+
+    .step-media img {
+      width: 100%;
+      border: 1px solid rgba(201,165,79,0.25);
+      display: block;
+    }
+
+    .terminal-panel-bottom {
+      margin-top: 16px;
+    }
+
+    .build{
+      border:1px solid rgba(201,165,79,0.18);
+      background:rgba(18,22,27,0.9);
+      padding:16px;
+      position: relative;
+    }
+
+    .build.hidden{
+      display:none;
+    }
+
+    .build-title{
+      font-family: "Cinzel", Georgia, "Times New Roman", serif;
+      text-transform:uppercase;
+      letter-spacing:1.4px;
+      color:var(--gold);
+      margin-bottom:6px;
+    }
+
+    .talent-images{
+      display:grid;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .talent-images img{
+      width:100%;
+      border:1px solid rgba(201,165,79,0.25);
+      display:block;
+      cursor: zoom-in;
+    }
+
+    .equipment-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .equipment-item{
+      border:1px solid rgba(201,165,79,0.18);
+      background:rgba(18,22,27,0.9);
+      padding:12px;
+      text-align:center;
+    }
+
+    .equipment-item.wide {
+      grid-column: 1 / -1;
+    }
+
+    .curio-doctrine {
+      margin-top: 4px;
+      border:1px solid rgba(201,165,79,0.18);
+      background:rgba(18,22,27,0.9);
+      padding:16px;
+      text-align:left;
+    }
+
+    .curio-doctrine strong {
+      display:block;
+      margin-bottom:8px;
+      font-size:15px;
+      color:#f2e8d2;
+    }
+
+    .curio-doctrine-list {
+      list-style:none;
+      margin:10px 0 0;
+      padding:0;
+      display:grid;
+      gap:8px;
+    }
+
+    .curio-doctrine-list li {
+      border:1px solid rgba(201,165,79,0.14);
+      background:rgba(10, 13, 16, 0.72);
+      padding:10px 12px;
+      color:var(--text);
+    }
+
+    .equipment-item h3{
+      margin-bottom:8px;
+      font-size:13px;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      color:var(--gold);
+    }
+
+    .equipment-item img{
+      width:100%;
+      max-width:100%;
+      border:1px solid rgba(201,165,79,0.25);
+      display:block;
+      margin:0 auto;
+    }
+
+    
+
+    .footer {
+      margin-top: 16px;
+      text-align: center;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 12px;
+      padding-bottom: 10px;
+    }
+
+    .archive-loader {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, #060708 0%, #0b0e11 100%);
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: loaderFade 1.2s ease 2.8s forwards;
+      pointer-events: none;
+    }
+
+    .archive-loader-box {
+      width: min(560px, 100%);
+      border: 1px solid var(--line-strong);
+      background: rgba(10, 13, 16, 0.96);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .archive-loader-title {
+      font-family: "Cinzel", Georgia, "Times New Roman", serif;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .archive-loader-line {
+      color: var(--text);
+      font-family: "Courier New", monospace;
+      font-size: 13px;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: loaderLine 0.35s ease forwards;
+    }
+
+    .archive-loader-line:nth-child(2) { animation-delay: 0.25s; }
+    .archive-loader-line:nth-child(3) { animation-delay: 0.7s; }
+    .archive-loader-line:nth-child(4) { animation-delay: 1.15s; }
+    .archive-loader-line:nth-child(5) { animation-delay: 1.6s; }
+
+    .archive-loader-bar {
+      height: 12px;
+      border: 1px solid rgba(201,165,79,0.24);
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+      margin-top: 14px;
+    }
+
+    .archive-loader-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      animation: loaderProgress 2.4s ease 0.3s forwards;
+    }
+
+    @keyframes loaderLine {
+      to { opacity: 1; }
+    }
+
+    @keyframes loaderProgress {
+      to { width: 100%; }
+    }
+
+    @keyframes loaderFade {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .type-delayed,
+      .type-delayed-2,
+      .type-psyker,
+      .type-psyker-2,
+      .typing {
+        white-space: normal;
+        width: auto;
+        border-right: none;
+        overflow: visible;
+      }
+      .equipment-grid { grid-template-columns: 1fr; }
+      .span-8, .span-7, .span-6, .span-5, .span-4 { grid-column: span 12; }
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+      .sigil { margin: 0 auto; }
+      .hero-actions { justify-content: center; }
+      .intro { margin-left: auto; margin-right: auto; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .typing { white-space: normal; width: auto; border-right: none; animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="archive-loader" aria-hidden="true">
+    <div class="archive-loader-box">
+      <div class="archive-loader-title">Загрузка архивного досье</div>
+      <div class="archive-loader-line">[ok] подключение к архивному узлу Терциум-IX-77</div>
+      <div class="archive-loader-line">[ok] санкция Ордо Еретикус подтверждена</div>
+      <div class="archive-loader-line">[ok] боевое досье Псайкера найдено</div>
+      <div class="archive-loader-line">[ok] доступ с мобильного терминала разрешён</div>
+      <div class="archive-loader-bar"><div class="archive-loader-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="scanlines"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div>Архивный узел: <strong>Tertium-IX-77</strong></div>
+      <div>Полномочия: <strong>Одобрено Инквизицией</strong></div>
+      <div>Позывной: <strong>MISCUSI</strong></div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="sigil"><img src="images/psyker-icon.png" alt="Псайкер" style="width:120px;height:120px;object-fit:contain;"/></div>
+
+        <div>
+          <div class="eyebrow"><span class="type-delayed">Закрытый боевой архив // Доступ разрешён</span></div>
+          <h1><span class="typing">Гайд на Псайкера</span></h1>
+          <p class="subtitle"><span class="type-delayed">Warhammer 40,000: Darktide • личный архив для самой важной аколитки Инквизиции</span></p>
+          <p class="intro"><span class="type-delayed-2">Быстрый и удобный гайд, который можно открыть прямо с телефона перед каткой. Здесь собрана база по роли, приоритетам, оружию и общему ритму игры.</span></p>
+
+          <div class="hero-actions">
+            <a href="#basics" class="btn">Основы</a>
+            <a href="#builds" class="btn">Билды</a>
+            <a href="#equipment" class="btn">Экипировка</a>
+            <a href="#notes" class="btn btn-danger">Личный комментарий</a>
+          </div>
+
+          <div class="seal">Санкционировано Ордо Еретикус</div>
+          <div class="stamp approved">Одобрено Инквизицией</div>
+          <div class="dossier-stamp">Инквизиторское досье</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="panel span-4">
+        <div class="section-sub"><span class="type-delayed">Анализ боевого потенциала субъекта</span></div>
+        <h2 class="section-title">Боевой профиль</h2>
+        <div class="stats">
+          <div class="stat-row">
+            <div class="stat-head"><span>Урон по элите</span><span>92%</span></div>
+            <div class="bar"><div class="fill" style="--target-width:92%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-head"><span>Контроль толпы</span><span>84%</span></div>
+            <div class="bar"><div class="fill delay-1" style="--target-width:84%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-head"><span>Темп зачистки</span><span>77%</span></div>
+            <div class="bar"><div class="fill delay-2" style="--target-width:77%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-head"><span>Выживаемость</span><span>58%</span></div>
+            <div class="bar"><div class="fill delay-3" style="--target-width:58%"></div></div>
+          </div>
+          <div class="stat-row">
+            <div class="stat-head"><span>Имперский стиль</span><span>100%</span></div>
+            <div class="bar"><div class="fill delay-4" style="--target-width:100%"></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel span-8" id="basics">
+        <div class="section-sub"><span class="type-psyker">Доктрина Псайкера</span></div>
+        <h2 class="section-title"><span class="type-psyker">В чём суть класса</span></h2>
+        <p class="quote"><span class="type-psyker-2">Псайкер — это класс про дисциплину, контроль и уничтожение самых опасных целей до того, как они успеют испортить жизнь всей команде. Всё как ты любишь.</span></p>
+        <ul class="list" style="margin-top:14px;">
+          <li><span class="label">Задача</span><br>Уничтожать сильных последователей хаоса и мутантов или защищать ударную группу телекинетическим щитом. Славить Императора.</li>
+          <li><span class="label">Подход</span><br>Держаться рядом с группой. Никогда не стоять в авангарде или в заднем ряду. Всегда быть внутри группы.</li>
+          <li><span class="label">Типичная ошибка</span><br>Какие ещё ошибки? Ты их не совершаешь.</li>
+          <li><span class="label">Мантра</span><br>позиция → угроза → действие → Император защищает</li>
+        </ul>
+      </article>
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <article class="panel span-12" id="notes">
+        <h2 class="section-title">Личный комментарий от автора</h2>
+        <p class="intro" style="max-width:none; margin-top:0;">
+          Эксклюзивно для самой опасной девушки в Терциуме.
+          <br/><br/>
+          Если что‑то в этом гайде будет непонятно, или захочется попробовать билд под другое оружие, способности или стиль игры — просто скажи.
+          Я расширю эту страницу и добавлю новые билды.
+        </p>
+      </article>
+          <article class="panel span-12" id="builds">
+        <h2 class="section-title">Боевые билды</h2>
+        <p class="intro" style="max-width:none; margin-top:0; margin-bottom:14px;">
+          Ниже два варианта игры: агрессивный билд на урон и билд поддержки с куполом. Оружие и экипировка используются одинаковые,
+          поэтому сначала идёт общий блок экипировки, а затем различия в талантах.
+        </p>
+
+        <div class="build-switcher" role="tablist" aria-label="Переключатель билдов">
+          <button class="switch-btn active" type="button" data-build-target="damage">Показать билд на урон</button>
+          <button class="switch-btn" type="button" data-build-target="support">Показать билд поддержки</button>
+          <button class="switch-btn" type="button" data-build-target="all">Показать оба билда</button>
+        </div>
+
+        <div class="builds-grid">
+
+          <div class="build frame-box" data-build="damage">
+            <h3 class="build-title">Билд 1 — Аннигилятор</h3>
+            <p class="muted">Протокол точечного истребления бронированных целей.</p>
+            <p class="muted" style="margin-top:8px;">Талант <span class="hl-psi">Усиленных Псиоников</span> используется в обоих билдах, так как по моему личному опыту даёт наибольший прирост полезности. Остальные варианты ощущаются заметно слабее.</p>
+
+            <div class="weapon" style="margin-top:12px;">
+              <strong>Назначение</strong>
+              <p>Этот билд предназначен для уничтожения наиболее опасных и тяжёлых целей на поле боя. Твоя задача — стереть из реальности всё, что носит тяжёлую броню, элитных врагов и боссов. Ты — не просто боец. Ты — орудие санкционированного истребления.</p>
+            </div>
+
+            <div class="step-list" style="margin-top:12px;">
+              <div class="step">
+                <strong>I. Собери три заряда «<span class="hl-psi">Усиленных Псиоников</span>»</strong>
+                <p>В строке бафов появится фиолетовая иконка головы с числом 3. Пока ты не используешь <span class="hl-warp">Взрыв Мозга</span>, этот эффект не исчезает. Пока активен этот баф, <span class="hl-warp">Взрыв Мозга</span> не создаёт <span class="hl-danger">угрозу</span>, что позволяет спокойно начинать серию уничтожения. Заряды накапливаются обычным уничтожением врагов.</p>
+                <div class="step-media"><img src="images/damage-step-1.jpg" alt="Билд Аннигилятор — усиленные псионики" /></div>
+              </div>
+              <div class="step">
+                <strong>II. Запусти цепь Взрыва Мозга</strong>
+                <p>Используй способность до тех пор, пока угроза не поднимется до <span class="hl-danger">80–90% угрозы</span>. После этого активируй Отталкивание, чтобы сбросить <span class="hl-danger">угрозу</span>, а затем продолжай использовать <span class="hl-warp">Взрыв Мозга</span>. В этот момент способность будет применяться значительно быстрее, а элитные цели исчезают одна за другой.</p>
+                <div class="step-media"><img src="images/damage-step-2.jpg" alt="Билд Аннигилятор — взрыв мозга" /></div>
+              </div>
+              <div class="step">
+                <strong>III. Следи за уровнем угрозы</strong>
+                <p>В этом билде используется талант, который увеличивает урон на 100%, если уровень угрозы достигает 100%. Однако цена за это — часть здоровья будет потеряна. Империум поощряет риск, но даже Инквизиция ценит выживших псайкеров, поэтому используй эту механику осознанно.</p>
+                <div class="step-media"><img src="images/damage-step-3.jpg" alt="Билд Аннигилятор — контроль угрозы" /></div>
+              </div>
+            </div>
+
+            <div class="priority-card frame-box">
+              <div class="priority-title">Приоритет целей</div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">☠</div>
+                <div class="enemy-name">Боссы</div>
+                <div class="enemy-tag">Истреблять первым</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">✠</div>
+                <div class="enemy-name">Элита</div>
+                <div class="enemy-tag">Истреблять первым</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">🛡</div>
+                <div class="enemy-name">Бронированные цели</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">⌖</div>
+                <div class="enemy-name">Стрелки</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">·</div>
+                <div class="enemy-name">Обычные слабые враги</div>
+              </div>
+            </div>
+
+            <div class="section-sub" style="margin-top:14px;">Таланты</div>
+            <div class="talent-images">
+              <img src="images/damage-build-1.jpg" alt="Damage build talents 1" />
+              <img src="images/damage-build-2.jpg" alt="Damage build talents 2" />
+              <img src="images/damage-build-3.jpg" alt="Damage build talents 3" />
+            </div>
+          </div>
+
+          <div class="build frame-box" data-build="support">
+            <h3 class="build-title">Билд 2 — Поддержка (<span class="hl-support">телекинетический купол</span>)</h3>
+            <p class="muted">Опора ударной группы и хранительница <span class="hl-support">телекинетического купола</span>.</p>
+            <p class="muted" style="margin-top:8px;">Талант <span class="hl-psi">Усиленных Псиоников</span> используется и здесь, потому что по моему личному опыту он даёт наибольший прирост полезности. Остальные варианты работают не так впечатляюще.</p>
+
+            <div class="weapon" style="margin-top:12px;">
+              <strong>Назначение</strong>
+              <p>Этот билд превращает тебя в опору всей группы. Ты поддерживаешь союзников и занимаешься быстрым истреблением слабых и обычных врагов, создавая одну из самых сильных защитных зон во всей игре.</p>
+            </div>
+
+            <div class="step-list" style="margin-top:12px;">
+              <div class="step">
+                <strong>I. Очищай поле через <span class="hl-support">Наведение</span></strong>
+                <p>Основная способность здесь — <span class="hl-support">Наведение</span>. Она выпускает психические осколки, которые перелетают от врага к врагу и почти всегда мгновенно уничтожают слабых противников. Это делает её идеальным инструментом для зачистки толп и быстрого получения зарядов <span class="hl-psi">Усиленных Псиоников</span>.</p>
+                <div class="step-media"><img src="images/support-step-1.jpg" alt="Билд Поддержка — наведение" /></div>
+              </div>
+              <div class="step">
+                <strong>II. Работай по массам слабых врагов</strong>
+                <p>В этом билде по урону лучше сосредоточиться на группах слабых врагов, позволяя осколкам перескакивать между целями и очищать пространство. Пока остальные разбирают тяжёлые цели, ты сохраняешь ритм боя и не даёшь ереси собраться в критическую массу.</p>
+                <div class="step-media"><img src="images/support-step-2.jpg" alt="Билд Поддержка — слабые враги" /></div>
+              </div>
+              <div class="step">
+                <strong>III. Ставь купол как можно чаще</strong>
+                <p><span class="hl-support">телекинетический купол</span> — одна из сильнейших защитных способностей во всей игре. Когда он активен, пули не проходят, сетки не работают, а большинство атак дальнего боя полностью игнорируется. Фактически это зона абсолютной защиты от стрельбы. Единственная реальная угроза внутри купола — удары врагов в ближнем бою. Поэтому купол лучше прожимать как можно чаще, даже если прямо сейчас всё выглядит спокойно: угроза может появиться внезапно, а группа уже будет под защитой. Не нужен он только тогда, когда врагов поблизости нет вообще. Под куполом мы не умираем.</p>
+                <div class="step-media"><img src="images/support-step-3.jpg" alt="Билд Поддержка — <span class="hl-support">телекинетический купол</span>" /></div>
+              </div>
+            </div>
+
+            <div class="priority-card frame-box">
+              <div class="priority-title">Приоритет целей</div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">·</div>
+                <div class="enemy-name">Обычные слабые враги</div>
+                <div class="enemy-tag">Истреблять первым</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">⌖</div>
+                <div class="enemy-name">Стрелки</div>
+                <div class="enemy-tag">Истреблять первым</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">🛡</div>
+                <div class="enemy-name">Бронированные цели</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">✠</div>
+                <div class="enemy-name">Элита</div>
+              </div>
+              <div class="priority-enemy">
+                <div class="enemy-icon">☠</div>
+                <div class="enemy-name">Боссы</div>
+              </div>
+            </div>
+
+            <div class="section-sub" style="margin-top:14px;">Таланты</div>
+            <div class="talent-images">
+              <img src="images/support-build-1.jpg" alt="Таланты билда поддержки 1" />
+              <img src="images/support-build-2.jpg" alt="Support build talents 2" />
+              <img src="images/support-build-3.jpg" alt="Support build talents 3" />
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <article class="panel span-12" id="equipment">
+        <h2 class="section-title">Экипировка</h2>
+        <p class="muted" style="margin-bottom:14px;">Эта экипировка используется для обоих билдов Псайкера: и для урона, и для поддержки с куполом.</p>
+
+        <div class="weapon" style="margin-bottom:14px;">
+          <strong>Важно</strong>
+          <p>Названия оружия или диковинок могут быть другими. Здесь важны именно благословления, улучшения и правильные специальные атаки на оружии, а также корректно подобранные характеристики на диковинках.</p>
+        </div>
+
+        <div class="weapon" style="margin-bottom:14px;">
+          <strong>Общая доктрина ближнего боя</strong>
+          <p>В ближнем бою основной инструмент — <span class="hl-weapon">Завет, длинный пламенный психосиловой меч</span>. Сначала собирай на нём полный заряд, а затем выпускай специальный удар в толпу. Результат, как правило, одинаков: всё, что стояло перед тобой секунду назад, перестаёт существовать. Неважно, сколько там врагов — энергия варпа делает своё дело. Это один из самых мощных ударов по скоплению противников, который есть у Псайкера.</p>
+        </div>
+
+        <div class="equipment-grid">
+
+          <div class="equipment-item">
+            <h3>Завет</h3>
+            <img src="images/weapon-1.jpg" alt="Завет — длинный пламенный психосиловой меч" />
+          </div>
+
+          <div class="equipment-item">
+            <h3>Эквинокс</h3>
+            <img src="images/weapon-2.jpg" alt="Эквинокс — психосиловой посох взрывной пустоты" />
+            <p class="muted" style="margin-top:8px;">
+            В билде <strong>Аннигилятор</strong> этот посох часто становится основным источником урона. Его атаки иногда вызывают эффект <em>Взрыва Мозга</em> на враге без ручного использования способности и без накопления угрозы, что делает его особенно мощным инструментом против элиты.
+            </p>
+            <p class="muted">
+            В билде <strong>Поддержка</strong> он используется реже из‑за наличия способности «<span class="hl-support">Наведение</span>», которая берёт на себя основную работу по зачистке. Однако посох остаётся отличной палочкой‑выручалочкой, если заряды Наведения закончились и ещё не восстановились.
+            </p>
+          </div>
+
+          <div class="equipment-item wide">
+            <h3>Диковинки</h3>
+            <img src="images/curio-1.jpg" alt="Диковинка Псайкера" style="max-width:420px; max-height:420px; object-fit:contain;" />
+            <div class="curio-doctrine">
+              <strong>Доктрина доработки диковинок</strong>
+              <p class="muted">Использовать одинаковые характеристики на всех диковинках. А именно:</p>
+              <ul class="curio-doctrine-list">
+                <li>% к восстановлению боевых способностей</li>
+                <li>% к стойкости</li>
+                <li>% к восстановлению стойкости</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+    </section>
+
+    
+
+            <article class="panel span-12 terminal-panel-bottom">
+        <h2 class="section-title">Терминал тактической сводки</h2>
+        <div class="terminal">
+          <div class="terminal-line"><span class="terminal-prompt">&gt; init_combat_protocol</span></div>
+          <div class="terminal-line"><span class="terminal-ok">[ok]</span> анализ поля боя завершён</div>
+          <div class="terminal-line"><span class="terminal-ok">[ok]</span> приоритетные цели отмечены</div>
+          <div class="terminal-line"><span class="terminal-warn">[warn]</span> уровень варп‑угрозы растёт</div>
+          <div class="terminal-line"><span class="terminal-prompt">&gt; рекомендация:</span> держись рядом с группой, уничтожай элиту, славь Императора</div>
+        </div>
+      </article>
+
+    <div class="footer">Император защищает • но хороший билд тоже помогает</div>
+  </div>
+
+  <script>
+    const switchButtons = document.querySelectorAll('[data-build-target]');
+    const buildCards = document.querySelectorAll('[data-build]');
+    const buildsGrid = document.querySelector('.builds-grid');
+
+    function setBuildView(target) {
+      switchButtons.forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.buildTarget === target);
+      });
+
+      buildCards.forEach((card) => {
+        const showCard = target === 'all' || card.dataset.build === target;
+        card.classList.toggle('hidden', !showCard);
+      });
+
+      if (target === 'all') {
+        buildsGrid.classList.remove('single-view');
+      } else {
+        buildsGrid.classList.add('single-view');
+      }
+    }
+
+    switchButtons.forEach((btn) => {
+      btn.addEventListener('click', () => setBuildView(btn.dataset.buildTarget));
+    });
+
+    
+    const zoomableImages = document.querySelectorAll('.talent-images img');
+
+    zoomableImages.forEach((img) => {
+      img.addEventListener('click', () => {
+        window.open(img.src, '_blank');
+      });
+    });
+
+    setBuildView('all');
+  </script>
+</body>
+</html>
