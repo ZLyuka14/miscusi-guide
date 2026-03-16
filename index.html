@@ -599,15 +599,16 @@
     }
 
     .enemy-icon {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       border: 1px solid var(--line-strong);
       display: grid;
       place-items: center;
       color: var(--gold-2);
       background: rgba(201,165,79,0.08);
-      font-size: 16px;
-      flex: 0 0 36px;
+      font-size: 20px;
+      flex: 0 0 42px;
+      line-height: 1;
     }
 
     .enemy-name {
@@ -1037,8 +1038,7 @@
           <article class="panel span-12" id="builds">
         <h2 class="section-title">Боевые билды</h2>
         <p class="intro" style="max-width:none; margin-top:0; margin-bottom:14px;">
-          Ниже два варианта игры: агрессивный билд на урон и билд поддержки с куполом. Оружие и экипировка используются одинаковые,
-          поэтому сначала идёт общий блок экипировки, а затем различия в талантах.
+          Ниже два варианта игры: агрессивный билд на урон и билд поддержки с куполом. Оружие и экипировка используются одинаковые для обоих билдов. Сначала показаны сами билды и их особенности, а общий раздел экипировки расположен ниже на странице.
         </p>
 
         <div class="build-switcher" role="tablist" aria-label="Переключатель билдов">
@@ -1094,11 +1094,11 @@
                 <div class="enemy-name">Бронированные цели</div>
               </div>
               <div class="priority-enemy">
-                <div class="enemy-icon">⌖</div>
+                <div class="enemy-icon">✦</div>
                 <div class="enemy-name">Стрелки</div>
               </div>
               <div class="priority-enemy">
-                <div class="enemy-icon">·</div>
+                <div class="enemy-icon">●</div>
                 <div class="enemy-name">Обычные слабые враги</div>
               </div>
             </div>
@@ -1142,12 +1142,12 @@
             <div class="priority-card frame-box">
               <div class="priority-title">Приоритет целей</div>
               <div class="priority-enemy">
-                <div class="enemy-icon">·</div>
+                <div class="enemy-icon">●</div>
                 <div class="enemy-name">Обычные слабые враги</div>
                 <div class="enemy-tag">Истреблять первым</div>
               </div>
               <div class="priority-enemy">
-                <div class="enemy-icon">⌖</div>
+                <div class="enemy-icon">✦</div>
                 <div class="enemy-name">Стрелки</div>
                 <div class="enemy-tag">Истреблять первым</div>
               </div>
